@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6B Tenses Challenge</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #ff6b6b;
+            --accent-color: #ffd166;
+            --bg-color: #f0f7ff;
+            --card-bg: #ffffff;
+            --text-color: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Fredoka', 'Quicksand', 'Arial Round', "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .game-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #e1f0ff;
+        }
+
+        /* 頂部資訊欄 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* 計時器條 */
+        .timer-container {
+            width: 100%;
+            height: 14px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .timer-bar {
+            height: 100%;
+            width: 100%;
+            background-color: var(--accent-color);
+            transition: width 0.1s linear, background-color 0.3s;
+        }
+
+        /* 題目區域 */
+        .question-card {
+            background-color: #f8f9fa;
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px dashed #bde0fe;
+        }
+
+        .question-text {
+            font-size: 1.35rem;
+            line-height: 1.6;
+            color: #2b2d42;
+            font-weight: 600;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 90px;
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0 8px;
+        }
+
+        /* 選項按鈕區 (RWD 響應式佈局) */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 500px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .btn-option {
+            background-color: #ffffff;
+            border: 2px solid #cdedf6;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            text-align: left;
+        }
+
+        .btn-option:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background-color: #e8f4f8;
+            border-color: var(--primary-color);
+        }
+
+        .btn-option:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-option.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+        }
+
+        .btn-option.wrong {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+        }
+
+        /* 解釋與下一題按鈕 */
+        .explanation-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .btn-next {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 100%;
+            display: none;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-next:hover {
+            background-color: #357abd;
+        }
+
+        /* 彈出視窗 (模態框) */
+        .modal {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            border-radius: 24px;
+        }
+
+        /* 遊戲結束結算視窗背景（相對路徑 happy.jpg） */
+        .summary-modal {
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), url('happy.jpg') no-repeat center center;
+            background-size: cover;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            border: 3px solid var(--accent-color);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .review-list {
+            text-align: left;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .review-item {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--secondary-color);
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .btn-restart {
+            background-color: #2ec4b6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div class="header">
+        <div class="badge" id="progress-text">題號: 1/30</div>
+        <div class="badge" id="score-text">得分: 0</div>
+    </div>
+
+    <div class="timer-container">
+        <div class="timer-bar" id="timer-bar"></div>
+    </div>
+
+    <div class="question-card">
+        <p class="question-text" id="question-text">載入中...</p>
+    </div>
+
+    <div class="options-grid" id="options-container">
+        </div>
+
+    <div class="explanation-box" id="explanation-box"></div>
+
+    <button class="btn-next" id="next-btn" onclick="nextQuestion()">下一題 ➔</button>
+
+    <div class="modal" id="encourage-modal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="encourage-title">🌟 太棒了！</h2>
+            <p id="encourage-msg" style="font-size: 1.2rem; margin: 15px 0;">你已經完成 10 題了！繼續保持！</p>
+            <button class="btn-restart" onclick="closeEncourageModal()">繼續挑戰 💪</button>
+        </div>
+    </div>
+
+    <div class="modal summary-modal" id="summary-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">🎉 挑戰完成！</h2>
+            <p style="font-size: 1.3rem; font-weight: bold;" id="final-score">你的總得分: 0 / 30</p>
+            
+            <div class="review-list" id="review-suggestions">
+                </div>
+
+            <button class="btn-restart" onclick="restartGame()">再玩一次 🔄</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Web Audio API 提示音效產生器（無需外部音效檔）
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'correct') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        } else {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(130, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
+        }
+    }
+
+    // 30 題小學六年級英文時態題庫
+    const questionBank = [
+        { text: "Mum <span class='blank'></span> to work on Mondays.", options: ["works", "is working", "was working", "worked"], answer: 0, tense: "Simple Present Tense", hint: "'on Mondays' 表示定期習慣，須使用 Simple Present Tense (主語 Mum 為單數，動詞加 -s)。" },
+        { text: "Miss Tran <span class='blank'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' 是 Present Perfect Tense 的提示詞，格式為 has/have + not + p.p. (eaten)。" },
+        { text: "Look! The children <span class='blank'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' 表示現在正在發生的動作，使用 Present Continuous Tense (are + playing)。" },
+        { text: "We <span class='blank'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' 為明確過去時間，須使用 Simple Past Tense (visited)。" },
+        { text: "They <span class='blank'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' 表示將來發生的事，使用 Future Tense (will + base verb)。" },
+        { text: "While Mary was reading, the phone <span class='blank'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "While 引導過去進行時，突發的插曲動作使用 Simple Past Tense (rang)。" },
+        { text: "Peter <span class='blank'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' 指過去時間，動詞 lose 的過去式為 lost。" },
+        { text: "I <span class='blank'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + 時間點' 提示動作從過去持續到現在，使用 Present Perfect Tense (have lived)。" },
+        { text: "Listen! Someone <span class='blank'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' 提示現在正在進行的事，使用 is/am/are + v-ing。" },
+        { text: "My father usually <span class='blank'></span> coffee in the morning.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'usually' 表示日常習慣，使用 Simple Present Tense (drinks)。" },
+        { text: "What <span class='blank'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "'at 8 p.m. last night' 指過去特定時間正在做的事，問句使用 Were you doing...。" },
+        { text: "We <span class='blank'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' 表示將來，使用 Future Tense (will visit)。" },
+        { text: "Tom <span class='blank'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' 常配合 Present Perfect Tense 使用，Tom 為第三人稱單數，使用 has。" },
+        { text: "They <span class='blank'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' 為過去時間，go 的過去式是 went。" },
+        { text: "Be quiet! The baby <span class='blank'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' 提醒當下發生的情況，使用 Present Continuous Tense。" },
+        { text: "Uncle Ray <span class='blank'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' 表示未來時間，使用 will fly。" },
+        { text: "She <span class='blank'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "當過去某動作正在進行（was watching）時，被另一個過去動作（called）打斷。" },
+        { text: "David never <span class='blank'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' 表示習慣或個人喜好事實，動詞加 -s (eats)。" },
+        { text: "Have you ever <span class='blank'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "Have you ever... 後接 Past Participle (p.p.)，see 的 p.p. 為 seen。" },
+        { text: "The rain stopped while we <span class='blank'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "while 子句之後使用過去進行時 (were waiting)。" },
+        { text: "My sister <span class='blank'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' 表示此刻正在進行，使用 is writing。" },
+        { text: "Mr. Chan <span class='blank'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + 一段時間' 提示從過去持續至今，使用 Present Perfect Tense (has taught)。" },
+        { text: "I <span class='blank'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' 指明確過去時間，動詞用 visited。" },
+        { text: "We <span class='blank'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' 表示將來，選 will take。" },
+        { text: "Water <span class='blank'></span> at 100 degrees Celsius.", options: ["boils", "is boiling", "boiled", "will boil"], answer: 0, tense: "Simple Present Tense", hint: "科學客觀事實使用 Simple Present Tense (boils)。" },
+        { text: "The cat ran away while the dog <span class='blank'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "while 後跟隨過去正在進行的動作 (was barking)。" },
+        { text: "Grandma <span class='blank'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "過去發生的事對現在造成影響（現在看不到），使用 Present Perfect Tense (has lost)。" },
+        { text: "Tim <span class='blank'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' 為將來時間，選 will buy。" },
+        { text: "The students <span class='blank'></span> noisy when the teacher arrived.", options: ["were", "are", "have been", "will be"], answer: 0, tense: "Simple Past Tense", hint: "'when the teacher arrived' 描述過去情境，選 were。" },
+        { text: "Sam always <span class='blank'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' 表示習慣性動作，Sam 為單數主語，選 brushes。" }
+    ];
+
+    let currentQIndex = 0;
+    let score = 0;
+    let timer = null;
+    let timeLeft = 10;
+    let tenseStats = {}; // 記錄答錯的時態
+
+    // 啟動遊戲
+    function initGame() {
+        currentQIndex = 0;
+        score = 0;
+        tenseStats = {};
+        document.getElementById("summary-modal").style.display = "none";
+        document.getElementById("encourage-modal").style.display = "none";
+        loadQuestion();
+    }
+
+    // 載入題目
+    function loadQuestion() {
+        resetState();
+        const q = questionBank[currentQIndex];
+
+        document.getElementById("progress-text").innerText = `題號: ${currentQIndex + 1} / 30`;
+        document.getElementById("score-text").innerText = `得分: ${score}`;
+        document.getElementById("question-text").innerHTML = q.text;
+
+        const optionsContainer = document.getElementById("options-container");
+        optionsContainer.innerHTML = "";
+
+        // 隨機混排選項（確保答案不固定在第一個）
+        let optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
+        optionsWithIndex.sort(() => Math.random() - 0.5);
+
+        optionsWithIndex.forEach(optObj => {
+            const btn = document.createElement("button");
+            btn.className = "btn-option";
+            btn.innerText = optObj.text;
+            btn.onclick = () => selectAnswer(btn, optObj.isCorrect, q);
+            optionsContainer.appendChild(btn);
+        });
+
+        startTimer();
+    }
+
+    // 清除狀態
+    function resetState() {
+        clearInterval(timer);
+        timeLeft = 10;
+        updateTimerBar();
+        document.getElementById("explanation-box").style.display = "none";
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    // 計時器邏輯
+    function startTimer() {
+        timer = setInterval(() => {
+            timeLeft -= 0.1;
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                clearInterval(timer);
+                handleTimeout();
+            }
+            updateTimerBar();
+        }, 100);
+    }
+
+    function updateTimerBar() {
+        const percentage = (timeLeft / 10) * 100;
+        const bar = document.getElementById("timer-bar");
+        bar.style.width = percentage + "%";
+        if (timeLeft < 3) {
+            bar.style.backgroundColor = "#ff6b6b";
+        } else {
+            bar.style.backgroundColor = "#ffd166";
+        }
+    }
+
+    // 選擇答案
+    function selectAnswer(selectedBtn, isCorrect, q) {
+        clearInterval(timer);
+        disableOptions();
+
+        if (isCorrect) {
+            playSound('correct');
+            selectedBtn.classList.add("correct");
+            score++;
+            document.getElementById("score-text").innerText = `得分: ${score}`;
+            showNextStep();
+        } else {
+            playSound('wrong');
+            selectedBtn.classList.add("wrong");
+            recordWrongTense(q.tense);
+            showExplanation(q);
+            highlightCorrectOption(q);
+        }
+    }
+
+    // 超時處理
+    function handleTimeout() {
+        disableOptions();
+        playSound('wrong');
+        const q = questionBank[currentQIndex];
+        recordWrongTense(q.tense);
+        showExplanation(q, "⏰ 時間到！");
+        highlightCorrectOption(q);
+    }
+
+    function recordWrongTense(tense) {
+        tenseStats[tense] = (tenseStats[tense] || 0) + 1;
+    }
+
+    function highlightCorrectOption(q) {
+        const correctText = q.options[q.answer];
+        const buttons = document.querySelectorAll(".btn-option");
+        buttons.forEach(btn => {
+            if (btn.innerText === correctText) {
+                btn.classList.add("correct");
+            }
+        });
+    }
+
+    function disableOptions() {
+        const buttons = document.querySelectorAll(".btn-option");
+        buttons.forEach(btn => btn.disabled = true);
+    }
+
+    function showExplanation(q, prefix = "") {
+        const expBox = document.getElementById("explanation-box");
+        expBox.innerHTML = `<strong>${prefix} 文法解析 (${q.tense})：</strong><br>${q.hint}`;
+        expBox.style.display = "block";
+        showNextStep();
+    }
+
+    function showNextStep() {
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    // 下一題或進入結算/加油關卡
+    function nextQuestion() {
+        currentQIndex++;
+        
+        // 每 10 題出現加油彈窗 (第 10 題及第 20 題完結後)
+        if (currentQIndex === 10 || currentQIndex === 20) {
+            showEncourageModal();
+            return;
+        }
+
+        if (currentQIndex < questionBank.length) {
+            loadQuestion();
+        } else {
+            showSummaryModal();
+        }
+    }
+
+    function showEncourageModal() {
+        const modal = document.getElementById("encourage-modal");
+        const msg = document.getElementById("encourage-msg");
+        if (currentQIndex === 10) {
+            msg.innerText = "🌟 加油！你已經完成首 10 題，表現不錯，繼續保持！";
+        } else if (currentQIndex === 20) {
+            msg.innerText = "🚀 太棒了！已完成 20 題，進入最後 10 題衝刺！";
+        }
+        modal.style.display = "flex";
+    }
+
+    function closeEncourageModal() {
+        document.getElementById("encourage-modal").style.display = "none";
+        loadQuestion();
+    }
+
+    // 顯示遊戲結束總結與溫習建議
+    function showSummaryModal() {
+        const modal = document.getElementById("summary-modal");
+        document.getElementById("final-score").innerText = `你的總得分: ${score} / 30`;
+
+        const suggestionsContainer = document.getElementById("review-suggestions");
+        suggestionsContainer.innerHTML = "<strong>💡 專屬溫習建議：</strong><br>";
+
+        const wrongTenses = Object.keys(tenseStats);
+        if (wrongTenses.length === 0) {
+            suggestionsContainer.innerHTML += "<div class='review-item' style='border-color:#28a745;'>太厲害了！你完全掌握了 6B 的所有時態！繼續保持！🏆</div>";
+        } else {
+            wrongTenses.forEach(tense => {
+                let tip = "";
+                switch(tense) {
+                    case "Simple Present Tense":
+                        tip = "留意日常習慣與事實，注意第三人稱單數 (He/She/It/單數名詞) 動詞需加 -s / -es。";
+                        break;
+                    case "Simple Past Tense":
+                        tip = "注意過去發生的動作及提示詞 (yesterday, last week, ago)，熟記不規則動詞 (Irregular Verbs)。";
+                        break;
+                    case "Present Continuous Tense":
+                        tip = "留意 Look!, Listen!, now 等提示詞，公式為 is / am / are + v-ing。";
+                        break;
+                    case "Future Tense":
+                        tip = "留意將來時間提示詞 (tomorrow, next year)，使用 will / be going to + 動詞原形。";
+                        break;
+                    case "Present Perfect Tense":
+                        tip = "留意 already, yet, ever, since, for，公式為 have / has + Past Participle (p.p.)。";
+                        break;
+                    case "Past Continuous Tense":
+                        tip = "注意過去進行時的公式 (was / were + v-ing)，常用於 while 及 when 引導的句型。";
+                        break;
+                }
+                suggestionsContainer.innerHTML += `<div class='review-item'><strong>${tense} (錯了 ${tenseStats[tense]} 題):</strong> ${tip}</div>`;
+            });
+        }
+
+        modal.style.display = "flex";
+    }
+
+    function restartGame() {
+        initGame();
+    }
+
+    // 網頁載入後啟動遊戲
+    window.onload = initGame;
+</script>
+</body>
+</html>
