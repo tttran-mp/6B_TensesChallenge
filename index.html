@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,7 @@
 
         * {
             box-sizing: border-box;
-            font-family: 'Fredoka', 'Quicksand', 'Arial Round', 'Arial', sans-serif;
+            font-family: 'Fredoka', 'Quicksand', 'Arial Round', "Microsoft JhengHei", sans-serif;
             margin: 0;
             padding: 0;
         }
@@ -43,7 +43,7 @@
             border: 4px solid #e1f0ff;
         }
 
-        /* Top Header Info */
+        /* 頂部資訊欄 */
         .header {
             display: flex;
             justify-content: space-between;
@@ -60,7 +60,7 @@
             font-size: 1.1rem;
         }
 
-        /* Timer Bar */
+        /* 計時器條 */
         .timer-container {
             width: 100%;
             height: 14px;
@@ -77,7 +77,7 @@
             transition: width 0.1s linear, background-color 0.3s;
         }
 
-        /* Question Card */
+        /* 題目區域 */
         .question-card {
             background-color: #f8f9fa;
             border-radius: 16px;
@@ -102,7 +102,7 @@
             padding: 0 8px;
         }
 
-        /* Options Grid (Responsive) */
+        /* 選項按鈕區 (RWD 響應式佈局) */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -152,7 +152,7 @@
             color: #721c24 !important;
         }
 
-        /* Explanation Box & Next Button */
+        /* 解釋與下一題按鈕 */
         .explanation-box {
             background-color: #fff3cd;
             border: 1px solid #ffeeba;
@@ -183,7 +183,7 @@
             background-color: #357abd;
         }
 
-        /* Modal Overlay */
+        /* 彈出視窗 (模態框) */
         .modal {
             display: none;
             position: absolute;
@@ -198,7 +198,7 @@
             border-radius: 24px;
         }
 
-        /* Summary Modal Background (Relative Path happy.png) */
+        /* 遊戲結束結算視窗背景（相對路徑 happy.png） */
         .summary-modal {
             background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), url('happy.jpg') no-repeat center center;
             background-size: cover;
@@ -252,59 +252,49 @@
 <body>
 
 <div class="game-container">
-    <!-- Top Bar -->
     <div class="header">
-        <div class="badge" id="progress-text">Question: 1 / 30</div>
-        <div class="badge" id="score-text">Score: 0</div>
+        <div class="badge" id="progress-text">題號: 1/30</div>
+        <div class="badge" id="score-text">得分: 0</div>
     </div>
 
-    <!-- Timer -->
     <div class="timer-container">
         <div class="timer-bar" id="timer-bar"></div>
     </div>
 
-    <!-- Question Box -->
     <div class="question-card">
-        <p class="question-text" id="question-text">Loading...</p>
+        <p class="question-text" id="question-text">載入中...</p>
     </div>
 
-    <!-- Options Grid -->
     <div class="options-grid" id="options-container">
-        <!-- Buttons rendered dynamically -->
-    </div>
+        </div>
 
-    <!-- Explanation Box -->
     <div class="explanation-box" id="explanation-box"></div>
 
-    <!-- Next Button -->
-    <button class="btn-next" id="next-btn" onclick="nextQuestion()">Next Question ➔</button>
+    <button class="btn-next" id="next-btn" onclick="nextQuestion()">下一題 ➔</button>
 
-    <!-- Encouragement Modal (Every 10 Questions) -->
     <div class="modal" id="encourage-modal">
         <div class="modal-content">
-            <h2 class="modal-title" id="encourage-title">🌟 Great Job!</h2>
-            <p id="encourage-msg" style="font-size: 1.2rem; margin: 15px 0;">You have completed 10 questions! Keep going!</p>
-            <button class="btn-restart" onclick="closeEncourageModal()">Continue Challenge 💪</button>
+            <h2 class="modal-title" id="encourage-title">🌟 太棒了！</h2>
+            <p id="encourage-msg" style="font-size: 1.2rem; margin: 15px 0;">你已經完成 10 題了！繼續保持！</p>
+            <button class="btn-restart" onclick="closeEncourageModal()">繼續挑戰 💪</button>
         </div>
     </div>
 
-    <!-- Summary Modal (Using happy.jpg as background) -->
     <div class="modal summary-modal" id="summary-modal">
         <div class="modal-content">
-            <h2 class="modal-title">🎉 Challenge Completed!</h2>
-            <p style="font-size: 1.3rem; font-weight: bold;" id="final-score">Your Final Score: 0 / 30</p>
+            <h2 class="modal-title">🎉 挑戰完成！</h2>
+            <p style="font-size: 1.3rem; font-weight: bold;" id="final-score">你的總得分: 0 / 30</p>
             
             <div class="review-list" id="review-suggestions">
-                <!-- Revision suggestions injected dynamically -->
-            </div>
+                </div>
 
-            <button class="btn-restart" onclick="restartGame()">Play Again 🔄</button>
+            <button class="btn-restart" onclick="restartGame()">再玩一次 🔄</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Web Audio API Sound Effects Generator
+    // Web Audio API 提示音效產生器（無需外部音效檔）
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
     function playSound(type) {
@@ -335,46 +325,47 @@
         }
     }
 
-    // 30 Primary 6 English Tense Questions
+    // 30 題小學六年級英文時態題庫
     const questionBank = [
-        { text: "Mum <span class='blank'></span> to work on Mondays.", options: ["works", "is working", "was working", "worked"], answer: 0, tense: "Simple Present Tense", hint: "'on Mondays' indicates a regular habit or routine. Use Simple Present Tense (singular subject 'Mum' takes verb + -s)." },
-        { text: "Miss Tran <span class='blank'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' is a keyword for Present Perfect Tense. Structure: has/have + not + past participle (eaten)." },
-        { text: "Look! The children <span class='blank'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' indicates an action happening right now. Use Present Continuous Tense (are + playing)." },
-        { text: "We <span class='blank'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' specifies a past time. Use Simple Past Tense (visited)." },
-        { text: "They <span class='blank'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' indicates a future action. Use Future Tense (will + base verb)." },
-        { text: "While Mary was reading, the phone <span class='blank'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "'While' introduces an action in progress in the past. An interrupting action uses Simple Past Tense (rang)." },
-        { text: "Peter <span class='blank'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' refers to past time. The past tense of 'lose' is 'lost'." },
-        { text: "I <span class='blank'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + point of time' shows an action started in the past and continues to the present. Use Present Perfect Tense (have lived)." },
-        { text: "Listen! Someone <span class='blank'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' shows an action happening right now. Use Present Continuous Tense (is + playing)." },
-        { text: "My father usually <span class='blank'></span> coffee in the morning.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'usually' indicates a habit. Use Simple Present Tense (drinks)." },
-        { text: "What <span class='blank'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "'at 8 p.m. last night' refers to an action in progress at a specific past time. Question form: Were you doing...?" },
-        { text: "We <span class='blank'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' indicates future time. Use Future Tense (will visit)." },
-        { text: "Tom <span class='blank'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' is often used with Present Perfect Tense. For 3rd person singular 'Tom', use 'has'." },
-        { text: "They <span class='blank'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' indicates past time. The past tense of 'go' is 'went'." },
-        { text: "Be quiet! The baby <span class='blank'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' warns about a current situation. Use Present Continuous Tense (is sleeping)." },
-        { text: "Uncle Ray <span class='blank'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' indicates future time. Use Future Tense (will fly)." },
-        { text: "She <span class='blank'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "When a past continuous action (was watching) is interrupted by another past action, use Simple Past Tense (called)." },
-        { text: "David never <span class='blank'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' expresses a routine habit or general fact. Use Simple Present Tense (eats)." },
-        { text: "Have you ever <span class='blank'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "After 'Have you ever...', use Past Participle (p.p.). The p.p. of 'see' is 'seen'." },
-        { text: "The rain stopped while we <span class='blank'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "After a 'while' clause, use Past Continuous Tense (were waiting)." },
-        { text: "My sister <span class='blank'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' indicates an action happening at this moment. Use Present Continuous Tense (is writing)." },
-        { text: "Mr. Chan <span class='blank'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + duration' indicates an action continuing from the past until now. Use Present Perfect Tense (has taught)." },
-        { text: "I <span class='blank'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' refers to a specific past time. Use Simple Past Tense (visited)." },
-        { text: "We <span class='blank'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' refers to future time. Use Future Tense (will take)." },
-        { text: "Water <span class='blank'></span> at 100 degrees Celsius.", options: ["boils", "is boiling", "boiled", "will boil"], answer: 0, tense: "Simple Present Tense", hint: "General facts and scientific truths use Simple Present Tense (boils)." },
-        { text: "The cat ran away while the dog <span class='blank'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "After 'while', use an action that was in progress in the past (was barking)." },
-        { text: "Grandma <span class='blank'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "A past action that has a result in the present (cannot read now) uses Present Perfect Tense (has lost)." },
-        { text: "Tim <span class='blank'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' indicates future time. Use Future Tense (will buy)." },
-        { text: "The students <span class='blank'></span> noisy when the teacher arrived.", options: ["were", "are", "have been", "will be"], answer: 0, tense: "Simple Past Tense", hint: "'when the teacher arrived' describes a past situation. Use Simple Past Tense (were)." },
-        { text: "Sam always <span class='blank'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' indicates a habitual action. For singular subject 'Sam', use Simple Present Tense (brushes)." }
+        { text: "Mum <span class='blank'></span> to work on Mondays.", options: ["works", "is working", "was working", "worked"], answer: 0, tense: "Simple Present Tense", hint: "'on Mondays' 表示定期習慣，須使用 Simple Present Tense (主語 Mum 為單數，動詞加 -s)。" },
+        { text: "Miss Tran <span class='blank'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' 是 Present Perfect Tense 的提示詞，格式為 has/have + not + p.p. (eaten)。" },
+        { text: "Look! The children <span class='blank'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' 表示現在正在發生的動作，使用 Present Continuous Tense (are + playing)。" },
+        { text: "We <span class='blank'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' 為明確過去時間，須使用 Simple Past Tense (visited)。" },
+        { text: "They <span class='blank'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' 表示將來發生的事，使用 Future Tense (will + base verb)。" },
+        { text: "While Mary was reading, the phone <span class='blank'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "While 引導過去進行時，突發的插曲動作使用 Simple Past Tense (rang)。" },
+        { text: "Peter <span class='blank'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' 指過去時間，動詞 lose 的過去式為 lost。" },
+        { text: "I <span class='blank'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + 時間點' 提示動作從過去持續到現在，使用 Present Perfect Tense (have lived)。" },
+        { text: "Listen! Someone <span class='blank'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' 提示現在正在進行的事，使用 is/am/are + v-ing。" },
+        { text: "My father usually <span class='blank'></span> coffee in the morning.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'usually' 表示日常習慣，使用 Simple Present Tense (drinks)。" },
+        { text: "What <span class='blank'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "'at 8 p.m. last night' 指過去特定時間正在做的事，問句使用 Were you doing...。" },
+        { text: "We <span class='blank'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' 表示將來，使用 Future Tense (will visit)。" },
+        { text: "Tom <span class='blank'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' 常配合 Present Perfect Tense 使用，Tom 為第三人稱單數，使用 has。" },
+        { text: "They <span class='blank'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' 為過去時間，go 的過去式是 went。" },
+        { text: "Be quiet! The baby <span class='blank'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' 提醒當下發生的情況，使用 Present Continuous Tense。" },
+        { text: "Uncle Ray <span class='blank'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' 表示未來時間，使用 will fly。" },
+        { text: "She <span class='blank'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "當過去某動作正在進行（was watching）時，被另一個過去動作（called）打斷。" },
+        { text: "David never <span class='blank'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' 表示習慣或個人喜好事實，動詞加 -s (eats)。" },
+        { text: "Have you ever <span class='blank'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "Have you ever... 後接 Past Participle (p.p.)，see 的 p.p. 為 seen。" },
+        { text: "The rain stopped while we <span class='blank'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "while 子句之後使用過去進行時 (were waiting)。" },
+        { text: "My sister <span class='blank'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' 表示此刻正在進行，使用 is writing。" },
+        { text: "Mr. Chan <span class='blank'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + 一段時間' 提示從過去持續至今，使用 Present Perfect Tense (has taught)。" },
+        { text: "I <span class='blank'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' 指明確過去時間，動詞用 visited。" },
+        { text: "We <span class='blank'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' 表示將來，選 will take。" },
+        { text: "Water <span class='blank'></span> at 100 degrees Celsius.", options: ["boils", "is boiling", "boiled", "will boil"], answer: 0, tense: "Simple Present Tense", hint: "科學客觀事實使用 Simple Present Tense (boils)。" },
+        { text: "The cat ran away while the dog <span class='blank'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "while 後跟隨過去正在進行的動作 (was barking)。" },
+        { text: "Grandma <span class='blank'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "過去發生的事對現在造成影響（現在看不到），使用 Present Perfect Tense (has lost)。" },
+        { text: "Tim <span class='blank'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' 為將來時間，選 will buy。" },
+        { text: "The students <span class='blank'></span> noisy when the teacher arrived.", options: ["were", "are", "have been", "will be"], answer: 0, tense: "Simple Past Tense", hint: "'when the teacher arrived' 描述過去情境，選 were。" },
+        { text: "Sam always <span class='blank'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' 表示習慣性動作，Sam 為單數主語，選 brushes。" }
     ];
 
     let currentQIndex = 0;
     let score = 0;
     let timer = null;
     let timeLeft = 10;
-    let tenseStats = {};
+    let tenseStats = {}; // 記錄答錯的時態
 
+    // 啟動遊戲
     function initGame() {
         currentQIndex = 0;
         score = 0;
@@ -384,17 +375,19 @@
         loadQuestion();
     }
 
+    // 載入題目
     function loadQuestion() {
         resetState();
         const q = questionBank[currentQIndex];
 
-        document.getElementById("progress-text").innerText = `Question: ${currentQIndex + 1} / 30`;
-        document.getElementById("score-text").innerText = `Score: ${score}`;
+        document.getElementById("progress-text").innerText = `題號: ${currentQIndex + 1} / 30`;
+        document.getElementById("score-text").innerText = `得分: ${score}`;
         document.getElementById("question-text").innerHTML = q.text;
 
         const optionsContainer = document.getElementById("options-container");
         optionsContainer.innerHTML = "";
 
+        // 隨機混排選項（確保答案不固定在第一個）
         let optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
         optionsWithIndex.sort(() => Math.random() - 0.5);
 
@@ -409,6 +402,7 @@
         startTimer();
     }
 
+    // 清除狀態
     function resetState() {
         clearInterval(timer);
         timeLeft = 10;
@@ -417,6 +411,7 @@
         document.getElementById("next-btn").style.display = "none";
     }
 
+    // 計時器邏輯
     function startTimer() {
         timer = setInterval(() => {
             timeLeft -= 0.1;
@@ -440,6 +435,7 @@
         }
     }
 
+    // 選擇答案
     function selectAnswer(selectedBtn, isCorrect, q) {
         clearInterval(timer);
         disableOptions();
@@ -448,7 +444,7 @@
             playSound('correct');
             selectedBtn.classList.add("correct");
             score++;
-            document.getElementById("score-text").innerText = `Score: ${score}`;
+            document.getElementById("score-text").innerText = `得分: ${score}`;
             showNextStep();
         } else {
             playSound('wrong');
@@ -459,12 +455,13 @@
         }
     }
 
+    // 超時處理
     function handleTimeout() {
         disableOptions();
         playSound('wrong');
         const q = questionBank[currentQIndex];
         recordWrongTense(q.tense);
-        showExplanation(q, "⏰ Time's Up!");
+        showExplanation(q, "⏰ 時間到！");
         highlightCorrectOption(q);
     }
 
@@ -489,7 +486,7 @@
 
     function showExplanation(q, prefix = "") {
         const expBox = document.getElementById("explanation-box");
-        expBox.innerHTML = `<strong>${prefix} Grammar Explanation (${q.tense}):</strong><br>${q.hint}`;
+        expBox.innerHTML = `<strong>${prefix} 文法解析 (${q.tense})：</strong><br>${q.hint}`;
         expBox.style.display = "block";
         showNextStep();
     }
@@ -498,9 +495,11 @@
         document.getElementById("next-btn").style.display = "block";
     }
 
+    // 下一題或進入結算/加油關卡
     function nextQuestion() {
         currentQIndex++;
         
+        // 每 10 題出現加油彈窗 (第 10 題及第 20 題完結後)
         if (currentQIndex === 10 || currentQIndex === 20) {
             showEncourageModal();
             return;
@@ -517,9 +516,9 @@
         const modal = document.getElementById("encourage-modal");
         const msg = document.getElementById("encourage-msg");
         if (currentQIndex === 10) {
-            msg.innerText = "🌟 Great job! You have finished the first 10 questions! Keep going!";
+            msg.innerText = "🌟 加油！你已經完成首 10 題，表現不錯，繼續保持！";
         } else if (currentQIndex === 20) {
-            msg.innerText = "🚀 Awesome! You have completed 20 questions! Final sprint time!";
+            msg.innerText = "🚀 太棒了！已完成 20 題，進入最後 10 題衝刺！";
         }
         modal.style.display = "flex";
     }
@@ -529,40 +528,41 @@
         loadQuestion();
     }
 
+    // 顯示遊戲結束總結與溫習建議
     function showSummaryModal() {
         const modal = document.getElementById("summary-modal");
-        document.getElementById("final-score").innerText = `Your Final Score: ${score} / 30`;
+        document.getElementById("final-score").innerText = `你的總得分: ${score} / 30`;
 
         const suggestionsContainer = document.getElementById("review-suggestions");
-        suggestionsContainer.innerHTML = "<strong>💡 Revision Tips for You:</strong><br>";
+        suggestionsContainer.innerHTML = "<strong>💡 專屬溫習建議：</strong><br>";
 
         const wrongTenses = Object.keys(tenseStats);
         if (wrongTenses.length === 0) {
-            suggestionsContainer.innerHTML += "<div class='review-item' style='border-color:#28a745;'>Awesome! You have mastered all 6B tenses perfectly! Keep up the great work! 🏆</div>";
+            suggestionsContainer.innerHTML += "<div class='review-item' style='border-color:#28a745;'>太厲害了！你完全掌握了 6B 的所有時態！繼續保持！🏆</div>";
         } else {
             wrongTenses.forEach(tense => {
                 let tip = "";
                 switch(tense) {
                     case "Simple Present Tense":
-                        tip = "Focus on daily habits and facts. Remember to add -s / -es for 3rd person singular subjects (He/She/It/Singular Noun).";
+                        tip = "留意日常習慣與事實，注意第三人稱單數 (He/She/It/單數名詞) 動詞需加 -s / -es。";
                         break;
                     case "Simple Past Tense":
-                        tip = "Look out for past time keywords (yesterday, last week, ago) and memorize irregular past tense verbs.";
+                        tip = "注意過去發生的動作及提示詞 (yesterday, last week, ago)，熟記不規則動詞 (Irregular Verbs)。";
                         break;
                     case "Present Continuous Tense":
-                        tip = "Watch for keywords like Look!, Listen!, and now. Structure: is / am / are + v-ing.";
+                        tip = "留意 Look!, Listen!, now 等提示詞，公式為 is / am / are + v-ing。";
                         break;
                     case "Future Tense":
-                        tip = "Look for future time keywords (tomorrow, next year). Use will / be going to + base verb.";
+                        tip = "留意將來時間提示詞 (tomorrow, next year)，使用 will / be going to + 動詞原形。";
                         break;
                     case "Present Perfect Tense":
-                        tip = "Watch out for keywords like already, yet, ever, since, and for. Structure: have / has + past participle (p.p.).";
+                        tip = "留意 already, yet, ever, since, for，公式為 have / has + Past Participle (p.p.)。";
                         break;
                     case "Past Continuous Tense":
-                        tip = "Remember the structure: was / were + v-ing. It is commonly used in sentence patterns with 'while' and 'when'.";
+                        tip = "注意過去進行時的公式 (was / were + v-ing)，常用於 while 及 when 引導的句型。";
                         break;
                 }
-                suggestionsContainer.innerHTML += `<div class='review-item'><strong>${tense} (${tenseStats[tense]} wrong):</strong> ${tip}</div>`;
+                suggestionsContainer.innerHTML += `<div class='review-item'><strong>${tense} (錯了 ${tenseStats[tense]} 題):</strong> ${tip}</div>`;
             });
         }
 
@@ -573,6 +573,7 @@
         initGame();
     }
 
+    // 網頁載入後啟動遊戲
     window.onload = initGame;
 </script>
 </body>
