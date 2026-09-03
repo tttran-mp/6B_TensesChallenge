@@ -43,11 +43,11 @@
             padding: clamp(10px, 3vw, 20px);
         }
 
-        /* 遊戲主容器 RWD 自動縮放 */
+        /* Responsive Main Container */
         .game-card {
             background: var(--card-bg);
             width: 100%;
-            max-width: 680px;
+            max-width: 700px;
             border-radius: 32px;
             border: 6px solid #BEE3F8;
             box-shadow: 0 12px 0 #90CDF4, 0 20px 30px rgba(0, 0, 0, 0.1);
@@ -56,27 +56,28 @@
             overflow: hidden;
         }
 
-        /* 頂部資訊欄 */
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .pill-badge {
             background: #EDF2F7;
             border: 3px solid #CBD5E0;
             color: var(--primary-dark);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 50px;
             font-weight: 700;
-            font-size: clamp(0.9rem, 2.8vw, 1.15rem);
+            font-size: clamp(0.85rem, 2.5vw, 1.05rem);
             box-shadow: 0 4px 0 #CBD5E0;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .score-badge {
@@ -86,16 +87,30 @@
             box-shadow: 0 4px 0 #F6E05E;
         }
 
-        /* 可愛計時器條 */
+        .bgm-btn {
+            background: #E2E8F0;
+            border: 3px solid #CBD5E0;
+            color: #4A5568;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bgm-btn.active {
+            background: #C6F6D5;
+            border-color: #68D391;
+            color: #22543D;
+            box-shadow: 0 4px 0 #68D391;
+        }
+
+        /* Timer Bar */
         .timer-outer {
             width: 100%;
-            height: 18px;
+            height: 16px;
             background: #E2E8F0;
             border-radius: 50px;
             border: 3px solid #CBD5E0;
             overflow: hidden;
-            margin-bottom: 20px;
-            position: relative;
+            margin-bottom: 18px;
         }
 
         .timer-inner {
@@ -106,22 +121,22 @@
             transition: width 0.1s linear, background 0.3s;
         }
 
-        /* 題目卡片 */
+        /* Question Box */
         .question-box {
             background: #F7FAFC;
             border: 4px dashed #90CDF4;
             border-radius: 24px;
-            padding: clamp(20px, 4vw, 30px) clamp(12px, 3vw, 20px);
-            margin-bottom: 20px;
+            padding: clamp(18px, 4vw, 28px) clamp(12px, 3vw, 20px);
+            margin-bottom: 18px;
             text-align: center;
-            min-height: 120px;
+            min-height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .question-text {
-            font-size: clamp(1.15rem, 3.8vw, 1.45rem);
+            font-size: clamp(1.1rem, 3.6vw, 1.4rem);
             line-height: 1.6;
             color: #2D3436;
             font-weight: 600;
@@ -136,10 +151,10 @@
             font-weight: 700;
         }
 
-        /* 選項按鈕區 (自適應 1 欄或 2 欄) */
+        /* Options Grid */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 12px;
             margin-bottom: 15px;
         }
@@ -148,29 +163,26 @@
             background: #FFFFFF;
             border: 3px solid #E2E8F0;
             border-radius: 20px;
-            padding: clamp(12px, 2.5vw, 16px) 18px;
-            font-size: clamp(1rem, 3vw, 1.15rem);
+            padding: clamp(12px, 2.5vw, 15px) 16px;
+            font-size: clamp(0.95rem, 2.8vw, 1.1rem);
             font-weight: 600;
             color: #4A5568;
             cursor: pointer;
-            box-shadow: 0 6px 0 #CBD5E0;
+            box-shadow: 0 5px 0 #CBD5E0;
             transition: all 0.15s ease;
             text-align: left;
-            display: flex;
-            align-items: center;
-            width: 100%;
             word-break: break-word;
         }
 
         .option-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             border-color: var(--primary);
-            box-shadow: 0 8px 0 #90CDF4;
+            box-shadow: 0 7px 0 #90CDF4;
             color: var(--primary-dark);
         }
 
         .option-btn:active:not(:disabled) {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: 0 2px 0 #CBD5E0;
         }
 
@@ -178,56 +190,51 @@
             background: #D4EDDA !important;
             border-color: var(--success) !important;
             color: #155724 !important;
-            box-shadow: 0 6px 0 var(--success-dark) !important;
+            box-shadow: 0 5px 0 var(--success-dark) !important;
         }
 
         .option-btn.wrong {
             background: #F8D7DA !important;
             border-color: var(--danger) !important;
             color: #721C24 !important;
-            box-shadow: 0 6px 0 var(--danger-dark) !important;
+            box-shadow: 0 5px 0 var(--danger-dark) !important;
         }
 
-        /* 答錯解釋盒 */
+        /* Explanation Box */
         .explanation-card {
             background: #FFFBEB;
             border: 3px solid #FCD34D;
             border-radius: 18px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             margin-bottom: 15px;
-            font-size: clamp(0.9rem, 2.6vw, 1.05rem);
+            font-size: clamp(0.88rem, 2.5vw, 1rem);
             color: #92400E;
             line-height: 1.5;
             display: none;
             box-shadow: 0 4px 0 #FDE68A;
         }
 
-        /* 可愛主按鈕 */
         .action-btn {
             background: var(--primary);
             color: white;
             border: none;
             border-radius: 25px;
-            padding: 14px 28px;
-            font-size: clamp(1.1rem, 3vw, 1.25rem);
+            padding: 12px 28px;
+            font-size: clamp(1rem, 3vw, 1.2rem);
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 6px 0 var(--primary-dark);
+            box-shadow: 0 5px 0 var(--primary-dark);
             transition: all 0.15s ease;
             display: none;
         }
 
-        .action-btn:hover {
-            background: #357ABD;
-        }
-
         .action-btn:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: 0 2px 0 var(--primary-dark);
         }
 
-        /* 彈出層 (Modal) 佈局 */
+        /* Modals */
         .modal-overlay {
             display: none;
             position: absolute;
@@ -242,9 +249,8 @@
             border-radius: 26px;
         }
 
-        /* 結算畫面背景 (套用相鄰層級 happy.png) */
         .summary-modal {
-            background: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.92)), url('happy.jpg') no-repeat center center;
+            background: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.92)), url('happy.png') no-repeat center center;
             background-size: cover;
         }
 
@@ -252,129 +258,179 @@
             background: #FFFFFF;
             border: 5px solid var(--accent);
             border-radius: 26px;
-            padding: clamp(20px, 4vw, 30px);
+            padding: clamp(18px, 4vw, 28px);
             box-shadow: 0 10px 0 var(--accent-dark), 0 15px 25px rgba(0,0,0,0.15);
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             max-height: 85vh;
             overflow-y: auto;
         }
 
         .modal-title {
-            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-size: clamp(1.4rem, 4.5vw, 1.8rem);
             color: var(--primary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .review-container {
             text-align: left;
-            margin: 16px 0;
-            font-size: clamp(0.88rem, 2.5vw, 1rem);
+            margin: 14px 0;
+            font-size: clamp(0.85rem, 2.4vw, 0.95rem);
         }
 
         .review-card {
             background: #F7FAFC;
             border-left: 5px solid var(--secondary);
-            padding: 10px 14px;
-            margin-bottom: 10px;
-            border-radius: 0 12px 12px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .modal-btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn-restart, .btn-export {
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: clamp(1rem, 2.8vw, 1.15rem);
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.15);
         }
 
         .btn-restart {
             background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 32px;
-            font-size: clamp(1.1rem, 3vw, 1.25rem);
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 6px 0 var(--success-dark);
-            margin-top: 10px;
-            display: inline-block;
+            box-shadow: 0 5px 0 var(--success-dark);
         }
 
-        .btn-restart:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 var(--success-dark);
+        .btn-export {
+            background: var(--primary);
+            box-shadow: 0 5px 0 var(--primary-dark);
         }
 
-        /* 小螢幕 (Mobile) 特別微調 */
+        .btn-restart:active, .btn-export:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+        }
+
         @media (max-width: 480px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-            .game-card {
-                padding: 16px 12px;
-                border-width: 4px;
-                box-shadow: 0 8px 0 #90CDF4, 0 12px 20px rgba(0, 0, 0, 0.1);
-            }
+            .options-grid { grid-template-columns: 1fr; }
+            .game-card { padding: 14px 10px; }
         }
     </style>
 </head>
 <body>
 
 <div class="game-card">
-    <!-- Top Info Bar -->
+    <!-- Top Bar with Music Toggle -->
     <div class="top-bar">
         <div class="pill-badge" id="progress-text">🎯 1 / 30</div>
+        <button class="pill-badge bgm-btn" id="bgm-btn" onclick="toggleBGM()">🎵 BGM: OFF</button>
         <div class="pill-badge score-badge" id="score-text">⭐ 0</div>
     </div>
 
-    <!-- Cute Timer Bar -->
+    <!-- Timer Bar -->
     <div class="timer-outer">
         <div class="timer-inner" id="timer-bar"></div>
     </div>
 
-    <!-- Question Display -->
+    <!-- Question -->
     <div class="question-box">
         <p class="question-text" id="question-text">Loading...</p>
     </div>
 
-    <!-- Answer Options Grid -->
+    <!-- Options -->
     <div class="options-grid" id="options-container"></div>
 
-    <!-- Grammar Explanation Box -->
+    <!-- Explanation -->
     <div class="explanation-card" id="explanation-box"></div>
 
-    <!-- Next Question Button -->
+    <!-- Next Button -->
     <button class="action-btn" id="next-btn" onclick="nextQuestion()">Next Question ➔</button>
 
-    <!-- Encouragement Modal (Every 10 Qs) -->
+    <!-- Encouragement Modal -->
     <div class="modal-overlay" id="encourage-modal">
         <div class="modal-content-box">
-            <h2 class="modal-title" id="encourage-title">🌟 Fantastic Work!</h2>
-            <p id="encourage-msg" style="font-size: clamp(1rem, 3vw, 1.2rem); margin: 15px 0; color: #4A5568;">
-                You completed 10 questions! Keep up the great energy!
+            <h2 class="modal-title" id="encourage-title">🌟 Great Job!</h2>
+            <p id="encourage-msg" style="font-size: clamp(0.95rem, 2.8vw, 1.1rem); margin: 15px 0; color: #4A5568;">
+                Keep going! You are doing awesome!
             </p>
-            <button class="btn-restart" onclick="closeEncourageModal()">Keep Going 💪</button>
+            <button class="btn-restart" onclick="closeEncourageModal()">Continue Challenge 💪</button>
         </div>
     </div>
 
-    <!-- Game Completion Summary Modal -->
+    <!-- Summary Modal -->
     <div class="modal-overlay summary-modal" id="summary-modal">
         <div class="modal-content-box">
             <h2 class="modal-title">🎉 Challenge Complete!</h2>
-            <p style="font-size: clamp(1.2rem, 3.5vw, 1.5rem); font-weight: 700; color: #2D3436;" id="final-score">
+            <p style="font-size: clamp(1.1rem, 3.2vw, 1.35rem); font-weight: 700; color: #2D3436;" id="final-score">
                 Your Score: 0 / 30
             </p>
             
             <div class="review-container" id="review-suggestions"></div>
 
-            <button class="btn-restart" onclick="restartGame()">Play Again 🔄</button>
+            <div class="modal-btn-group">
+                <button class="btn-export" onclick="exportReport()">📄 Download Report</button>
+                <button class="btn-restart" onclick="restartGame()">Play Again 🔄</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Web Audio API Sound Effects
+    // Web Audio API Sound System
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    function playSound(type) {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
+    let bgmOn = false;
+    let bgmTimer = null;
+    const bgmNotes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 329.63, 293.66]; // Cute C Major melody
+    let noteIndex = 0;
+
+    function toggleBGM() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        bgmOn = !bgmOn;
+        const btn = document.getElementById("bgm-btn");
+        if (bgmOn) {
+            btn.innerText = "🎵 BGM: ON";
+            btn.classList.add("active");
+            startBGM();
+        } else {
+            btn.innerText = "🔇 BGM: OFF";
+            btn.classList.remove("active");
+            stopBGM();
         }
+    }
+
+    function startBGM() {
+        if (bgmTimer) clearInterval(bgmTimer);
+        bgmTimer = setInterval(() => {
+            if (!bgmOn) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(bgmNotes[noteIndex], audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.025, audioCtx.currentTime); // Soft background music
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.35);
+            noteIndex = (noteIndex + 1) % bgmNotes.length;
+        }, 380);
+    }
+
+    function stopBGM() {
+        if (bgmTimer) clearInterval(bgmTimer);
+    }
+
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.connect(gain);
@@ -382,8 +438,8 @@
 
         if (type === 'correct') {
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
             gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
             osc.start();
@@ -399,40 +455,46 @@
         }
     }
 
-    // Question Bank (30 Primary 6 Tenses Questions)
-    const questionBank = [
-        { text: "Mum <span class='blank-space'></span> to work on Mondays.", options: ["works", "is working", "was working", "worked"], answer: 0, tense: "Simple Present Tense", hint: "'on Mondays' indicates a regular habit. Use Simple Present Tense (Mum + verb-s)." },
-        { text: "Miss Tran <span class='blank-space'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' is a key signal for Present Perfect Tense (has/have + not + p.p.)." },
-        { text: "Look! The children <span class='blank-space'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' signals an action taking place now. Use Present Continuous Tense (are + v-ing)." },
-        { text: "We <span class='blank-space'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' refers to a specific finished past time. Use Simple Past Tense." },
-        { text: "They <span class='blank-space'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' signals a future plan. Use Future Tense (will + base verb)." },
-        { text: "While Mary was reading, the phone <span class='blank-space'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "An action that interrupts a past continuous action takes Simple Past Tense (rang)." },
-        { text: "Peter <span class='blank-space'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' is a past time indicator. The past tense of 'lose' is 'lost'." },
-        { text: "I <span class='blank-space'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + point in time' shows an action continuing from past to present (have lived)." },
-        { text: "Listen! Someone <span class='blank-space'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' signals an ongoing current action. Use Present Continuous Tense (is playing)." },
-        { text: "My father usually <span class='blank-space'></span> coffee in the morning.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'usually' expresses a daily habit. Use Simple Present Tense (drinks)." },
-        { text: "What <span class='blank-space'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "Asking about an action in progress at a specific past time: 'Were you doing...?'" },
-        { text: "We <span class='blank-space'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' indicates a future action. Use Future Tense (will visit)." },
-        { text: "Tom <span class='blank-space'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' pairs with Present Perfect Tense. Singular subject 'Tom' takes 'has'." },
-        { text: "They <span class='blank-space'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' specifies past time. The past tense of 'go' is 'went'." },
-        { text: "Be quiet! The baby <span class='blank-space'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' warns about a happening now. Use Present Continuous Tense (is sleeping)." },
-        { text: "Uncle Ray <span class='blank-space'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' refers to the future. Use Future Tense (will fly)." },
-        { text: "She <span class='blank-space'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "An action in progress in the past (was watching) interrupted by another action (called)." },
-        { text: "David never <span class='blank-space'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' states a general truth/habit. Use Simple Present Tense (eats)." },
-        { text: "Have you ever <span class='blank-space'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "'Have you ever...' takes a Past Participle (p.p.). The p.p. of 'see' is 'seen'." },
-        { text: "The rain stopped while we <span class='blank-space'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "After 'while', use Past Continuous Tense for the background action (were waiting)." },
-        { text: "My sister <span class='blank-space'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' shows an action happening at this exact moment (is writing)." },
-        { text: "Mr. Chan <span class='blank-space'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + period of time' shows action extending to present. Use Present Perfect (has taught)." },
-        { text: "I <span class='blank-space'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' indicates past time. Use Simple Past Tense (visited)." },
-        { text: "We <span class='blank-space'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' indicates future time. Use Future Tense (will take)." },
+    // Expanded Question Pool (New combination shuffled every time)
+    const masterQuestionBank = [
+        { text: "Mum <span class='blank-space'></span> to work on Mondays.", options: ["works", "is working", "was working", "worked"], answer: 0, tense: "Simple Present Tense", hint: "'on Mondays' indicates a regular habit. Use Simple Present Tense." },
+        { text: "Miss Tran <span class='blank-space'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' signals Present Perfect Tense (has/have + not + p.p.)." },
+        { text: "Look! The children <span class='blank-space'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' shows an action taking place now." },
+        { text: "We <span class='blank-space'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' specifies a finished past time." },
+        { text: "They <span class='blank-space'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' signals a future plan (will + base verb)." },
+        { text: "While Mary was reading, the phone <span class='blank-space'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "An interrupting action takes Simple Past Tense (rang)." },
+        { text: "Peter <span class='blank-space'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' refers to past time. Use 'lost'." },
+        { text: "I <span class='blank-space'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + time' shows action continuing to present (have lived)." },
+        { text: "Listen! Someone <span class='blank-space'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' signals an action happening right now." },
+        { text: "My father usually <span class='blank-space'></span> coffee in the morning.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'usually' expresses a habit (drinks)." },
+        { text: "What <span class='blank-space'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "Asking about continuous action in past: 'Were you doing...?'" },
+        { text: "We <span class='blank-space'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' indicates future time (will visit)." },
+        { text: "Tom <span class='blank-space'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' pairs with Present Perfect Tense (has finished)." },
+        { text: "They <span class='blank-space'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' specifies past time. Use 'went'." },
+        { text: "Be quiet! The baby <span class='blank-space'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' warns about an action happening now." },
+        { text: "Uncle Ray <span class='blank-space'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' indicates future time (will fly)." },
+        { text: "She <span class='blank-space'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress interrupted by another past action." },
+        { text: "David never <span class='blank-space'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' states a general truth/habit (eats)." },
+        { text: "Have you ever <span class='blank-space'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "'Have you ever...' takes Past Participle (seen)." },
+        { text: "The rain stopped while we <span class='blank-space'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "After 'while', use Past Continuous Tense (were waiting)." },
+        { text: "My sister <span class='blank-space'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' shows action happening at this moment." },
+        { text: "Mr. Chan <span class='blank-space'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + period' shows action continuing to present (has taught)." },
+        { text: "I <span class='blank-space'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' indicates past time (visited)." },
+        { text: "We <span class='blank-space'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' indicates future time (will take)." },
         { text: "Water <span class='blank-space'></span> at 100 degrees Celsius.", options: ["boils", "is boiling", "boiled", "will boil"], answer: 0, tense: "Simple Present Tense", hint: "Scientific facts use Simple Present Tense (boils)." },
-        { text: "The cat ran away while the dog <span class='blank-space'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "Use Past Continuous Tense after 'while' for an action in progress (was barking)." },
-        { text: "Grandma <span class='blank-space'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "A past event with a result in the present (cannot read now) uses Present Perfect Tense." },
-        { text: "Tim <span class='blank-space'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' specifies a future time. Use Future Tense (will buy)." },
-        { text: "The students <span class='blank-space'></span> noisy when the teacher arrived.", options: ["were", "are", "have been", "will be"], answer: 0, tense: "Simple Past Tense", hint: "'when the teacher arrived' describes a past situation. Use 'were'." },
-        { text: "Sam always <span class='blank-space'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' specifies a habit. Singular subject 'Sam' takes 'brushes'." }
+        { text: "The cat ran away while the dog <span class='blank-space'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "Use Past Continuous Tense after 'while' (was barking)." },
+        { text: "Grandma <span class='blank-space'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "Past event with a present result (cannot read now)." },
+        { text: "Tim <span class='blank-space'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' specifies future time (will buy)." },
+        { text: "The students <span class='blank-space'></span> noisy when the teacher arrived.", options: ["were", "are", "have been", "will be"], answer: 0, tense: "Simple Past Tense", hint: "'when the teacher arrived' describes a past state." },
+        { text: "Sam always <span class='blank-space'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' specifies a habit (brushes)." },
+        { text: "The Sun <span class='blank-space'></span> in the East.", options: ["rises", "is rising", "rose", "has risen"], answer: 0, tense: "Simple Present Tense", hint: "Universal truth uses Simple Present Tense." },
+        { text: "We <span class='blank-space'></span> a movie when the power went out.", options: ["were watching", "watched", "are watching", "have watched"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress interrupted by past action." },
+        { text: "I <span class='blank-space'></span> my room already. Can I play now?", options: ["have cleaned", "cleaned", "clean", "was cleaning"], answer: 0, tense: "Present Perfect Tense", hint: "'already' indicates Present Perfect Tense." },
+        { text: "Look at those clouds! It <span class='blank-space'></span> rain soon.", options: ["will", "is", "was", "has"], answer: 0, tense: "Future Tense", hint: "Expressing future prediction (will rain)." },
+        { text: "They <span class='blank-space'></span> dinner at 7 p.m. yesterday.", options: ["were having", "have had", "are having", "will have"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress at specific past time." }
     ];
 
+    let currentSessionQuestions = [];
     let currentQIndex = 0;
     let score = 0;
     let timer = null;
@@ -443,6 +505,9 @@
         currentQIndex = 0;
         score = 0;
         tenseStats = {};
+        // Feature 1: Randomly shuffle and select 30 questions from master bank
+        currentSessionQuestions = [...masterQuestionBank].sort(() => Math.random() - 0.5).slice(0, 30);
+        
         document.getElementById("summary-modal").style.display = "none";
         document.getElementById("encourage-modal").style.display = "none";
         loadQuestion();
@@ -450,9 +515,9 @@
 
     function loadQuestion() {
         resetState();
-        const q = questionBank[currentQIndex];
+        const q = currentSessionQuestions[currentQIndex];
 
-        document.getElementById("progress-text").innerText = `🎯 Question ${currentQIndex + 1} / 30`;
+        document.getElementById("progress-text").innerText = `🎯 ${currentQIndex + 1} / 30`;
         document.getElementById("score-text").innerText = `⭐ ${score}`;
         document.getElementById("question-text").innerHTML = q.text;
 
@@ -526,7 +591,7 @@
     function handleTimeout() {
         disableOptions();
         playSound('wrong');
-        const q = questionBank[currentQIndex];
+        const q = currentSessionQuestions[currentQIndex];
         recordWrongTense(q.tense);
         showExplanation(q, "⏰ Time's Up!");
         highlightCorrectOption(q);
@@ -570,7 +635,7 @@
             return;
         }
 
-        if (currentQIndex < questionBank.length) {
+        if (currentQIndex < currentSessionQuestions.length) {
             loadQuestion();
         } else {
             showSummaryModal();
@@ -581,9 +646,9 @@
         const modal = document.getElementById("encourage-modal");
         const msg = document.getElementById("encourage-msg");
         if (currentQIndex === 10) {
-            msg.innerText = "🌟 Great job! You have completed the first 10 questions! Keep up the momentum!";
+            msg.innerText = "🌟 Fantastic! First 10 questions done! Keep going strong!";
         } else if (currentQIndex === 20) {
-            msg.innerText = "🚀 Awesome! 20 questions done! Final 10 questions to go!";
+            msg.innerText = "🚀 Superb! 20 questions complete! Final 10 questions sprint!";
         }
         modal.style.display = "flex";
     }
@@ -602,35 +667,52 @@
 
         const wrongTenses = Object.keys(tenseStats);
         if (wrongTenses.length === 0) {
-            suggestionsContainer.innerHTML += "<div class='review-card' style='border-color:#2ECC71;'>🏆 Perfect Score! You have mastered all 6B English tenses! Outstanding effort!</div>";
+            suggestionsContainer.innerHTML += "<div class='review-card' style='border-color:#2ECC71;'>🏆 Perfect Score! You are a 6B Tenses Master! Outstanding effort!</div>";
         } else {
             wrongTenses.forEach(tense => {
                 let tip = "";
                 switch(tense) {
-                    case "Simple Present Tense":
-                        tip = "Review daily habits and facts. Remember singular subjects (He/She/It) need verb + -s/-es.";
-                        break;
-                    case "Simple Past Tense":
-                        tip = "Watch for past keywords (yesterday, last week, ago) and memorize irregular verbs.";
-                        break;
-                    case "Present Continuous Tense":
-                        tip = "Look out for Look!, Listen!, and now. Use structure: is/am/are + v-ing.";
-                        break;
-                    case "Future Tense":
-                        tip = "Check for future keywords (tomorrow, next week). Use will / be going to + base verb.";
-                        break;
-                    case "Present Perfect Tense":
-                        tip = "Identify keywords like already, yet, ever, since, for. Use: have/has + past participle (p.p.).";
-                        break;
-                    case "Past Continuous Tense":
-                        tip = "Use structure: was/were + v-ing. Common in sentence patterns with 'while' or 'when'.";
-                        break;
+                    case "Simple Present Tense": tip = "Review daily habits. Remember singular subjects (He/She/It) take verb + -s/-es."; break;
+                    case "Simple Past Tense": tip = "Watch for past keywords (yesterday, last week, ago) and irregular verbs."; break;
+                    case "Present Continuous Tense": tip = "Look out for Look!, Listen!, now. Structure: is/am/are + v-ing."; break;
+                    case "Future Tense": tip = "Check for future keywords (tomorrow, next week). Use will + base verb."; break;
+                    case "Present Perfect Tense": tip = "Look for already, yet, ever, since, for. Use: have/has + p.p."; break;
+                    case "Past Continuous Tense": tip = "Use structure: was/were + v-ing (commonly with 'while' / 'when')."; break;
                 }
-                suggestionsContainer.innerHTML += `<div class='review-card'><strong>${tense} (${tenseStats[tense]} mistakes):</strong><br>${tip}</div>`;
+                suggestionsContainer.innerHTML += `<div class='review-card'><strong>${tense} (${tenseStats[tense]} mistake/s):</strong><br>${tip}</div>`;
             });
         }
 
         modal.style.display = "flex";
+    }
+
+    // Feature 3: Export Simple Score Report
+    function exportReport() {
+        const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        let reportText = `======================================\n`;
+        reportText += `       6B TENSE CHALLENGE REPORT      \n`;
+        reportText += `======================================\n`;
+        reportText += `Date: ${dateStr}\n`;
+        reportText += `Final Score: ${score} / 30 (${Math.round((score/30)*100)}%)\n\n`;
+        reportText += `PERFORMANCE SUMMARY:\n`;
+        
+        const wrongTenses = Object.keys(tenseStats);
+        if (wrongTenses.length === 0) {
+            reportText += `🌟 Perfect! You mastered all 6B Tenses with zero mistakes!\n`;
+        } else {
+            reportText += `Areas to Revise:\n`;
+            wrongTenses.forEach(tense => {
+                reportText += `- ${tense}: ${tenseStats[tense]} mistake(s)\n`;
+            });
+        }
+        reportText += `\nKeep practicing daily to stay sharp! 💪\n`;
+        reportText += `======================================\n`;
+
+        const blob = new Blob([reportText], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `6B_Tenses_Report_${dateStr.replace(/ /g, '_')}.txt`;
+        link.click();
     }
 
     function restartGame() {
