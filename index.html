@@ -43,7 +43,6 @@
             padding: clamp(10px, 3vw, 20px);
         }
 
-        /* Responsive Main Container */
         .game-card {
             background: var(--card-bg);
             width: 100%;
@@ -56,7 +55,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -102,7 +100,6 @@
             box-shadow: 0 4px 0 #68D391;
         }
 
-        /* Timer Bar */
         .timer-outer {
             width: 100%;
             height: 16px;
@@ -121,7 +118,6 @@
             transition: width 0.1s linear, background 0.3s;
         }
 
-        /* Question Box */
         .question-box {
             background: #F7FAFC;
             border: 4px dashed #90CDF4;
@@ -151,7 +147,6 @@
             font-weight: 700;
         }
 
-        /* Options Grid */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -200,7 +195,6 @@
             box-shadow: 0 5px 0 var(--danger-dark) !important;
         }
 
-        /* Explanation Box */
         .explanation-card {
             background: #FFFBEB;
             border: 3px solid #FCD34D;
@@ -234,7 +228,6 @@
             box-shadow: 0 2px 0 var(--primary-dark);
         }
 
-        /* Modals */
         .modal-overlay {
             display: none;
             position: absolute;
@@ -329,33 +322,26 @@
 <body>
 
 <div class="game-card">
-    <!-- Top Bar with Music Toggle -->
     <div class="top-bar">
         <div class="pill-badge" id="progress-text">🎯 1 / 30</div>
         <button class="pill-badge bgm-btn" id="bgm-btn" onclick="toggleBGM()">🎵 BGM: OFF</button>
         <div class="pill-badge score-badge" id="score-text">⭐ 0</div>
     </div>
 
-    <!-- Timer Bar -->
     <div class="timer-outer">
         <div class="timer-inner" id="timer-bar"></div>
     </div>
 
-    <!-- Question -->
     <div class="question-box">
         <p class="question-text" id="question-text">Loading...</p>
     </div>
 
-    <!-- Options -->
     <div class="options-grid" id="options-container"></div>
 
-    <!-- Explanation -->
     <div class="explanation-card" id="explanation-box"></div>
 
-    <!-- Next Button -->
     <button class="action-btn" id="next-btn" onclick="nextQuestion()">Next Question ➔</button>
 
-    <!-- Encouragement Modal -->
     <div class="modal-overlay" id="encourage-modal">
         <div class="modal-content-box">
             <h2 class="modal-title" id="encourage-title">🌟 Great Job!</h2>
@@ -366,7 +352,6 @@
         </div>
     </div>
 
-    <!-- Summary Modal -->
     <div class="modal-overlay summary-modal" id="summary-modal">
         <div class="modal-content-box">
             <h2 class="modal-title">🎉 Challenge Complete!</h2>
@@ -385,11 +370,10 @@
 </div>
 
 <script>
-    // Web Audio API Sound System
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let bgmOn = false;
     let bgmTimer = null;
-    const bgmNotes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 329.63, 293.66]; // Cute C Major melody
+    const bgmNotes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 329.63, 293.66];
     let noteIndex = 0;
 
     function toggleBGM() {
@@ -415,7 +399,7 @@
             const gain = audioCtx.createGain();
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(bgmNotes[noteIndex], audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.025, audioCtx.currentTime); // Soft background music
+            gain.gain.setValueAtTime(0.025, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
@@ -455,43 +439,117 @@
         }
     }
 
-    // Expanded Question Pool (New combination shuffled every time)
     const masterQuestionBank = [
+        // --- 1. Simple Present Tense ---
         { text: "Mum <span class='blank-space'></span> to work on Mondays.", options: ["works", "is working", "was working", "worked"], answer: 0, tense: "Simple Present Tense", hint: "'on Mondays' indicates a regular habit. Use Simple Present Tense." },
-        { text: "Miss Tran <span class='blank-space'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' signals Present Perfect Tense (has/have + not + p.p.)." },
-        { text: "Look! The children <span class='blank-space'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' shows an action taking place now." },
-        { text: "We <span class='blank-space'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' specifies a finished past time." },
-        { text: "They <span class='blank-space'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' signals a future plan (will + base verb)." },
-        { text: "While Mary was reading, the phone <span class='blank-space'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "An interrupting action takes Simple Past Tense (rang)." },
-        { text: "Peter <span class='blank-space'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' refers to past time. Use 'lost'." },
-        { text: "I <span class='blank-space'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + time' shows action continuing to present (have lived)." },
-        { text: "Listen! Someone <span class='blank-space'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' signals an action happening right now." },
         { text: "My father usually <span class='blank-space'></span> coffee in the morning.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'usually' expresses a habit (drinks)." },
-        { text: "What <span class='blank-space'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "Asking about continuous action in past: 'Were you doing...?'" },
-        { text: "We <span class='blank-space'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' indicates future time (will visit)." },
-        { text: "Tom <span class='blank-space'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' pairs with Present Perfect Tense (has finished)." },
-        { text: "They <span class='blank-space'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' specifies past time. Use 'went'." },
-        { text: "Be quiet! The baby <span class='blank-space'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' warns about an action happening now." },
-        { text: "Uncle Ray <span class='blank-space'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' indicates future time (will fly)." },
-        { text: "She <span class='blank-space'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress interrupted by another past action." },
-        { text: "David never <span class='blank-space'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' states a general truth/habit (eats)." },
-        { text: "Have you ever <span class='blank-space'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "'Have you ever...' takes Past Participle (seen)." },
-        { text: "The rain stopped while we <span class='blank-space'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "After 'while', use Past Continuous Tense (were waiting)." },
-        { text: "My sister <span class='blank-space'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' shows action happening at this moment." },
-        { text: "Mr. Chan <span class='blank-space'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + period' shows action continuing to present (has taught)." },
-        { text: "I <span class='blank-space'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' indicates past time (visited)." },
-        { text: "We <span class='blank-space'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' indicates future time (will take)." },
+        { text: "David never <span class='blank-space'></span> fast food because he prefers healthy meals.", options: ["eats", "is eating", "ate", "has eaten"], answer: 0, tense: "Simple Present Tense", hint: "'never' states a general truth or habit (eats)." },
         { text: "Water <span class='blank-space'></span> at 100 degrees Celsius.", options: ["boils", "is boiling", "boiled", "will boil"], answer: 0, tense: "Simple Present Tense", hint: "Scientific facts use Simple Present Tense (boils)." },
-        { text: "The cat ran away while the dog <span class='blank-space'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "Use Past Continuous Tense after 'while' (was barking)." },
-        { text: "Grandma <span class='blank-space'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "Past event with a present result (cannot read now)." },
-        { text: "Tim <span class='blank-space'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' specifies future time (will buy)." },
+        { text: "Sam always <span class='blank-space'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' specifies a daily habit (brushes)." },
+        { text: "The Sun <span class='blank-space'></span> in the East.", options: ["rises", "is rising", "rose", "has risen"], answer: 0, tense: "Simple Present Tense", hint: "Universal truth uses Simple Present Tense (rises)." },
+        { text: "Dogs <span class='blank-space'></span> loudly when they see strangers.", options: ["bark", "are barking", "barked", "have barked"], answer: 0, tense: "Simple Present Tense", hint: "General behavior of animals takes Simple Present Tense." },
+        { text: "She <span class='blank-space'></span> the school bus at 7:00 a.m. every day.", options: ["catches", "is catching", "caught", "has caught"], answer: 0, tense: "Simple Present Tense", hint: "'every day' signals a routine (catches)." },
+        { text: "My uncle <span class='blank-space'></span> in Canada.", options: ["lives", "is living", "lived", "was living"], answer: 0, tense: "Simple Present Tense", hint: "Stating a permanent situation (lives)." },
+        { text: "The library <span class='blank-space'></span> at 9:00 a.m. on Saturdays.", options: ["opens", "is opening", "opened", "has opened"], answer: 0, tense: "Simple Present Tense", hint: "Timetables and schedules use Simple Present Tense." },
+        { text: "Earth <span class='blank-space'></span> around the Sun.", options: ["goes", "is going", "went", "has gone"], answer: 0, tense: "Simple Present Tense", hint: "A general fact takes Simple Present Tense (goes)." },
+        { text: "He rarely <span class='blank-space'></span> sugary soda.", options: ["drinks", "is drinking", "drank", "has drunk"], answer: 0, tense: "Simple Present Tense", hint: "'rarely' specifies frequency of a habit (drinks)." },
+        { text: "Nurses <span class='blank-space'></span> after patients in hospitals.", options: ["look", "are looking", "looked", "have looked"], answer: 0, tense: "Simple Present Tense", hint: "General job responsibility takes Simple Present Tense." },
+        { text: "Tim's brother <span class='blank-space'></span> the violin very well.", options: ["plays", "is playing", "played", "has played"], answer: 0, tense: "Simple Present Tense", hint: "Stating an ability or skill uses Simple Present Tense." },
+        { text: "Do you <span class='blank-space'></span> spicy food?", options: ["like", "likes", "liking", "liked"], answer: 0, tense: "Simple Present Tense", hint: "Questions with 'Do' take base verb (like)." },
+        { text: "Mr. Lee <span class='blank-space'></span> science in our school.", options: ["teaches", "is teaching", "taught", "has taught"], answer: 0, tense: "Simple Present Tense", hint: "General truths or current jobs take Simple Present Tense." },
+
+        // --- 2. Present Continuous Tense ---
+        { text: "Look! The children <span class='blank-space'></span> in the playground.", options: ["are playing", "play", "played", "were playing"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' shows an action taking place now." },
+        { text: "Listen! Someone <span class='blank-space'></span> the piano upstairs.", options: ["is playing", "plays", "played", "has played"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' signals an action happening right now." },
+        { text: "Be quiet! The baby <span class='blank-space'></span> in the bedroom.", options: ["is sleeping", "sleeps", "slept", "has slept"], answer: 0, tense: "Present Continuous Tense", hint: "'Be quiet!' warns about an action happening now." },
+        { text: "My sister <span class='blank-space'></span> a letter right now.", options: ["is writing", "writes", "wrote", "has written"], answer: 0, tense: "Present Continuous Tense", hint: "'right now' shows action happening at this moment." },
+        { text: "Look at those kids! They <span class='blank-space'></span> across the street.", options: ["are running", "run", "ran", "have run"], answer: 0, tense: "Present Continuous Tense", hint: "'Look at...' signals an ongoing current action." },
+        { text: "Shh! The principal <span class='blank-space'></span> on stage.", options: ["is speaking", "speaks", "spoke", "has spoken"], answer: 0, tense: "Present Continuous Tense", hint: "'Shh!' indicates a current happening." },
+        { text: "Right now, my mother <span class='blank-space'></span> dinner in the kitchen.", options: ["is cooking", "cooks", "cooked", "was cooking"], answer: 0, tense: "Present Continuous Tense", hint: "'Right now' uses Present Continuous Tense." },
+        { text: "We <span class='blank-space'></span> a party at the moment.", options: ["are having", "have", "had", "were having"], answer: 0, tense: "Present Continuous Tense", hint: "'at the moment' indicates present action in progress." },
+        { text: "Listen! The birds <span class='blank-space'></span> in the tree.", options: ["are singing", "sing", "sang", "were singing"], answer: 0, tense: "Present Continuous Tense", hint: "'Listen!' points to action happening now." },
+        { text: "They <span class='blank-space'></span> a new shopping mall near my home now.", options: ["are building", "build", "built", "have built"], answer: 0, tense: "Present Continuous Tense", hint: "'now' specifies present continuous action." },
+        { text: "Why <span class='blank-space'></span> you crying, little boy?", options: ["are", "do", "did", "were"], answer: 0, tense: "Present Continuous Tense", hint: "'Why are you + v-ing?' is the question structure." },
+        { text: "Look! The bus <span class='blank-space'></span> fast!", options: ["is coming", "comes", "came", "has come"], answer: 0, tense: "Present Continuous Tense", hint: "'Look!' demands attention to ongoing action." },
+        { text: "My father <span class='blank-space'></span> his car at this moment.", options: ["is repairing", "repairs", "repaired", "has repaired"], answer: 0, tense: "Present Continuous Tense", hint: "'at this moment' signals Present Continuous Tense." },
+        { text: "The teacher <span class='blank-space'></span> on the whiteboard now.", options: ["is writing", "writes", "wrote", "was writing"], answer: 0, tense: "Present Continuous Tense", hint: "'now' indicates Present Continuous Tense." },
+        { text: "Hurry up! Everyone <span class='blank-space'></span> for you.", options: ["is waiting", "waits", "waited", "has waited"], answer: 0, tense: "Present Continuous Tense", hint: "Urgency signals continuous action right now." },
+        { text: "I <span class='blank-space'></span> a very interesting storybook now.", options: ["am reading", "read", "have read", "was reading"], answer: 0, tense: "Present Continuous Tense", hint: "Subject 'I' takes 'am + v-ing' (am reading)." },
+
+        // --- 3. Simple Past Tense ---
+        { text: "We <span class='blank-space'></span> Japan two years ago.", options: ["visited", "have visited", "visit", "were visiting"], answer: 0, tense: "Simple Past Tense", hint: "'two years ago' specifies a finished past time." },
+        { text: "Peter <span class='blank-space'></span> his keys in the park yesterday morning.", options: ["lost", "has lost", "loses", "is losing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday morning' refers to past time. Use 'lost'." },
+        { text: "They <span class='blank-space'></span> to the beach last Saturday.", options: ["went", "go", "have gone", "are going"], answer: 0, tense: "Simple Past Tense", hint: "'last Saturday' specifies past time. Use 'went'." },
+        { text: "I <span class='blank-space'></span> my grandfather in the hospital yesterday.", options: ["visited", "have visited", "visit", "will visit"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' indicates past time (visited)." },
         { text: "The students <span class='blank-space'></span> noisy when the teacher arrived.", options: ["were", "are", "have been", "will be"], answer: 0, tense: "Simple Past Tense", hint: "'when the teacher arrived' describes a past state." },
-        { text: "Sam always <span class='blank-space'></span> his teeth before going to bed.", options: ["brushes", "is brushing", "brushed", "has brushed"], answer: 0, tense: "Simple Present Tense", hint: "'always' specifies a habit (brushes)." },
-        { text: "The Sun <span class='blank-space'></span> in the East.", options: ["rises", "is rising", "rose", "has risen"], answer: 0, tense: "Simple Present Tense", hint: "Universal truth uses Simple Present Tense." },
+        { text: "I <span class='blank-space'></span> a cool Lego set last night.", options: ["bought", "buy", "have bought", "was buying"], answer: 0, tense: "Simple Past Tense", hint: "'last night' indicates past time. Past of buy is 'bought'." },
+        { text: "She <span class='blank-space'></span> her leg while ice-skating last winter.", options: ["broke", "breaks", "has broken", "was breaking"], answer: 0, tense: "Simple Past Tense", hint: "'last winter' refers to finished past time." },
+        { text: "We <span class='blank-space'></span> hotpot for dinner yesterday.", options: ["ate", "eat", "have eaten", "are eating"], answer: 0, tense: "Simple Past Tense", hint: "Past tense of 'eat' is 'ate'." },
+        { text: "Mr. Wong <span class='blank-space'></span> us maths three years ago.", options: ["taught", "teaches", "has taught", "was teaching"], answer: 0, tense: "Simple Past Tense", hint: "'three years ago' signals Simple Past Tense." },
+        { text: "My family <span class='blank-space'></span> to Kowloon last month.", options: ["moved", "moves", "has moved", "is moving"], answer: 0, tense: "Simple Past Tense", hint: "'last month' specifies finished past time." },
+        { text: "Did you <span class='blank-space'></span> the fireworks last night?", options: ["see", "saw", "seen", "seeing"], answer: 0, tense: "Simple Past Tense", hint: "Questions starting with 'Did' take base verb (see)." },
+        { text: "He <span class='blank-space'></span> a letter to his teacher yesterday.", options: ["wrote", "writes", "has written", "was writing"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' takes Simple Past Tense (wrote)." },
+        { text: "I <span class='blank-space'></span> a bad cold last week.", options: ["caught", "catch", "have caught", "was catching"], answer: 0, tense: "Simple Past Tense", hint: "Past tense of 'catch' is 'caught'." },
+        { text: "They <span class='blank-space'></span> the football match yesterday afternoon.", options: ["won", "win", "have won", "are winning"], answer: 0, tense: "Simple Past Tense", hint: "Past tense of 'win' is 'won'." },
+        { text: "She <span class='blank-space'></span> a lost wallet in the school playground this morning.", options: ["found", "finds", "has found", "was finding"], answer: 0, tense: "Simple Past Tense", hint: "Past tense of 'find' is 'found'." },
+        { text: "We <span class='blank-space'></span> early last night because we were tired.", options: ["slept", "sleep", "have slept", "are sleeping"], answer: 0, tense: "Simple Past Tense", hint: "Past tense of 'sleep' is 'slept'." },
+        { text: "My dog <span class='blank-space'></span> loudly at the mailman yesterday.", options: ["barked", "barks", "has barked", "was barking"], answer: 0, tense: "Simple Past Tense", hint: "'yesterday' requires Simple Past Tense (barked)." },
+
+        // --- 4. Past Continuous Tense ---
+        { text: "While Mary was reading, the phone <span class='blank-space'></span>.", options: ["rang", "was ringing", "rings", "has rung"], answer: 0, tense: "Past Continuous Tense", hint: "An interrupting action takes Simple Past Tense (rang)." },
+        { text: "What <span class='blank-space'></span> you doing at 8 p.m. last night?", options: ["were", "are", "have been", "did"], answer: 0, tense: "Past Continuous Tense", hint: "Asking about continuous action in past: 'Were you doing...?'" },
+        { text: "She <span class='blank-space'></span> TV when her friend called her.", options: ["was watching", "watched", "is watching", "has watched"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress interrupted by another past action." },
+        { text: "The rain stopped while we <span class='blank-space'></span> under the tree.", options: ["were waiting", "waited", "are waiting", "have waited"], answer: 0, tense: "Past Continuous Tense", hint: "After 'while', use Past Continuous Tense (were waiting)." },
+        { text: "The cat ran away while the dog <span class='blank-space'></span>.", options: ["was barking", "barked", "is barking", "has barked"], answer: 0, tense: "Past Continuous Tense", hint: "Use Past Continuous Tense after 'while' (was barking)." },
         { text: "We <span class='blank-space'></span> a movie when the power went out.", options: ["were watching", "watched", "are watching", "have watched"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress interrupted by past action." },
-        { text: "I <span class='blank-space'></span> my room already. Can I play now?", options: ["have cleaned", "cleaned", "clean", "was cleaning"], answer: 0, tense: "Present Perfect Tense", hint: "'already' indicates Present Perfect Tense." },
+        { text: "They <span class='blank-space'></span> dinner at 7 p.m. yesterday.", options: ["were having", "have had", "are having", "will have"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress at specific past time." },
+        { text: "What <span class='blank-space'></span> they discussing when I walked in?", options: ["were", "are", "did", "have"], answer: 0, tense: "Past Continuous Tense", hint: "Question form for past continuous: 'Were they + v-ing'." },
+        { text: "I <span class='blank-space'></span> my homework while my brother was playing games.", options: ["was doing", "did", "am doing", "have done"], answer: 0, tense: "Past Continuous Tense", hint: "Two simultaneous past actions both take Past Continuous Tense." },
+        { text: "The wind <span class='blank-space'></span> hard when we left the house.", options: ["was blowing", "blew", "is blowing", "has blown"], answer: 0, tense: "Past Continuous Tense", hint: "Background action in progress in the past (was blowing)." },
+        { text: "While I <span class='blank-space'></span> home, it started to rain.", options: ["was walking", "walked", "am walking", "have walked"], answer: 0, tense: "Past Continuous Tense", hint: "Use Past Continuous Tense after 'while' (was walking)." },
+        { text: "She dropped her plate while she <span class='blank-space'></span> the dishes.", options: ["was washing", "washed", "is washing", "has washed"], answer: 0, tense: "Past Continuous Tense", hint: "'while' indicates an ongoing action in the past." },
+        { text: "<span class='blank-space'></span> you sleeping when I called you last night?", options: ["Were", "Are", "Did", "Have"], answer: 0, tense: "Past Continuous Tense", hint: "Past continuous question with 'you' takes 'Were'." },
+        { text: "They <span class='blank-space'></span> the wall when I saw them.", options: ["were painting", "painted", "are painting", "have painted"], answer: 0, tense: "Past Continuous Tense", hint: "Ongoing action at the moment of seeing." },
+        { text: "He fell asleep while he <span class='blank-space'></span> for the test.", options: ["was studying", "studied", "is studying", "has studied"], answer: 0, tense: "Past Continuous Tense", hint: "Use Past Continuous Tense after 'while'." },
+        { text: "The birds <span class='blank-space'></span> loudly all morning yesterday.", options: ["were chirping", "chirp", "are chirping", "have chirped"], answer: 0, tense: "Past Continuous Tense", hint: "'all morning yesterday' emphasizes continuous past duration." },
+
+        // --- 5. Future Tense ---
+        { text: "They <span class='blank-space'></span> a picnic next Sunday if it is sunny.", options: ["will have", "had", "have had", "were having"], answer: 0, tense: "Future Tense", hint: "'next Sunday' signals a future plan (will + base verb)." },
+        { text: "We <span class='blank-space'></span> the new museum tomorrow morning.", options: ["will visit", "visited", "have visited", "visit"], answer: 0, tense: "Future Tense", hint: "'tomorrow morning' indicates future time (will visit)." },
+        { text: "Uncle Ray <span class='blank-space'></span> to London next week.", options: ["will fly", "flew", "has flown", "was flying"], answer: 0, tense: "Future Tense", hint: "'next week' refers to future time (will fly)." },
+        { text: "We <span class='blank-space'></span> our final examinations next month.", options: ["will take", "took", "have taken", "were taking"], answer: 0, tense: "Future Tense", hint: "'next month' indicates future time (will take)." },
+        { text: "Tim <span class='blank-space'></span> a new bicycle next Friday.", options: ["will buy", "bought", "has bought", "was buying"], answer: 0, tense: "Future Tense", hint: "'next Friday' specifies future time (will buy)." },
         { text: "Look at those clouds! It <span class='blank-space'></span> rain soon.", options: ["will", "is", "was", "has"], answer: 0, tense: "Future Tense", hint: "Expressing future prediction (will rain)." },
-        { text: "They <span class='blank-space'></span> dinner at 7 p.m. yesterday.", options: ["were having", "have had", "are having", "will have"], answer: 0, tense: "Past Continuous Tense", hint: "Action in progress at specific past time." }
+        { text: "I <span class='blank-space'></span> you as soon as I arrive home tomorrow.", options: ["will call", "called", "have called", "was calling"], answer: 0, tense: "Future Tense", hint: "'tomorrow' indicates Future Tense (will call)." },
+        { text: "She <span class='blank-space'></span> 12 years old next month.", options: ["will be", "is", "was", "has been"], answer: 0, tense: "Future Tense", hint: "Future fact uses Future Tense (will be)." },
+        { text: "The school concert <span class='blank-space'></span> at 7 p.m. tomorrow night.", options: ["will start", "started", "has started", "was starting"], answer: 0, tense: "Future Tense", hint: "'tomorrow night' signals Future Tense (will start)." },
+        { text: "We <span class='blank-space'></span> to Taiwan this coming summer.", options: ["are going to travel", "traveled", "have traveled", "were traveling"], answer: 0, tense: "Future Tense", hint: "'be going to + verb' expresses future plans." },
+        { text: "<span class='blank-space'></span> you join our basketball club next term?", options: ["Will", "Did", "Have", "Were"], answer: 0, tense: "Future Tense", hint: "Future question starts with 'Will'." },
+        { text: "My parents <span class='blank-space'></span> a new garden house next year.", options: ["will build", "built", "have built", "were building"], answer: 0, tense: "Future Tense", hint: "'next year' indicates future time (will build)." },
+        { text: "He promises he <span class='blank-space'></span> harder in the future.", options: ["will work", "worked", "has worked", "was working"], answer: 0, tense: "Future Tense", hint: "A promise about the future uses 'will + verb'." },
+        { text: "I <span class='blank-space'></span> you my comic book tomorrow.", options: ["will lend", "lent", "have lent", "was lending"], answer: 0, tense: "Future Tense", hint: "'tomorrow' indicates Future Tense (will lend)." },
+        { text: "They <span class='blank-space'></span> a charity bazaar next Saturday.", options: ["will hold", "held", "have held", "were holding"], answer: 0, tense: "Future Tense", hint: "'next Saturday' indicates future time (will hold)." },
+        { text: "She is going to <span class='blank-space'></span> French next year.", options: ["learn", "learned", "learning", "learns"], answer: 0, tense: "Future Tense", hint: "After 'be going to', use base verb (learn)." },
+        { text: "We <span class='blank-space'></span> Grandfather's 80th birthday next week.", options: ["will celebrate", "celebrated", "have celebrated", "were celebrating"], answer: 0, tense: "Future Tense", hint: "'next week' signals Future Tense (will celebrate)." },
+
+        // --- 6. Present Perfect Tense ---
+        { text: "Miss Tran <span class='blank-space'></span> lunch yet.", options: ["has not eaten", "has eaten", "has not ate", "had not eaten"], answer: 0, tense: "Present Perfect Tense", hint: "'yet' signals Present Perfect Tense (has/have + not + p.p.)." },
+        { text: "I <span class='blank-space'></span> in Hong Kong since 2018.", options: ["have lived", "lived", "am living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'since + time' shows action continuing to present (have lived)." },
+        { text: "Tom <span class='blank-space'></span> already finished his homework.", options: ["has", "is", "was", "did"], answer: 0, tense: "Present Perfect Tense", hint: "'already' pairs with Present Perfect Tense (has finished)." },
+        { text: "Have you ever <span class='blank-space'></span> a panda in real life?", options: ["seen", "saw", "see", "seeing"], answer: 0, tense: "Present Perfect Tense", hint: "'Have you ever...' takes Past Participle (seen)." },
+        { text: "Mr. Chan <span class='blank-space'></span> English in this school for ten years.", options: ["has taught", "taught", "teaches", "is teaching"], answer: 0, tense: "Present Perfect Tense", hint: "'for + period' shows action continuing to present (has taught)." },
+        { text: "Grandma <span class='blank-space'></span> her glasses. She cannot read now.", options: ["has lost", "lost", "loses", "was losing"], answer: 0, tense: "Present Perfect Tense", hint: "Past event with a present result (cannot read now)." },
+        { text: "I <span class='blank-space'></span> my room already. Can I play now?", options: ["have cleaned", "cleaned", "clean", "was cleaning"], answer: 0, tense: "Present Perfect Tense", hint: "'already' indicates Present Perfect Tense." },
+        { text: "Have you <span class='blank-space'></span> reading this library book yet?", options: ["finished", "finish", "finishing", "finishes"], answer: 0, tense: "Present Perfect Tense", hint: "'Have you + p.p. ... yet?' form." },
+        { text: "My brother has just <span class='blank-space'></span> his driving test.", options: ["passed", "pass", "passing", "passes"], answer: 0, tense: "Present Perfect Tense", hint: "'has just' is followed by Past Participle (passed)." },
+        { text: "We <span class='blank-space'></span> in this flat for five years.", options: ["have lived", "lived", "are living", "will live"], answer: 0, tense: "Present Perfect Tense", hint: "'for + time period' takes Present Perfect Tense." },
+        { text: "She has never <span class='blank-space'></span> Disneyland before.", options: ["visited", "visit", "visiting", "visits"], answer: 0, tense: "Present Perfect Tense", hint: "'has never' is followed by Past Participle (visited)." },
+        { text: "He <span class='blank-space'></span> his wallet, so he cannot pay for lunch.", options: ["has lost", "lost", "loses", "is losing"], answer: 0, tense: "Present Perfect Tense", hint: "Past action with present consequence uses Present Perfect Tense." },
+        { text: "They have already <span class='blank-space'></span> all the washing-up.", options: ["done", "did", "do", "doing"], answer: 0, tense: "Present Perfect Tense", hint: "'have already' takes Past Participle (done)." },
+        { text: "How long <span class='blank-space'></span> you known your best friend?", options: ["have", "did", "are", "were"], answer: 0, tense: "Present Perfect Tense", hint: "'How long have you + p.p.?' asks about duration to present." },
+        { text: "Lucy <span class='blank-space'></span> in London since she was born.", options: ["has lived", "lived", "is living", "was living"], answer: 0, tense: "Present Perfect Tense", hint: "'since' indicates Present Perfect Tense." },
+        { text: "I have not <span class='blank-space'></span> any reply from him yet.", options: ["received", "receive", "receiving", "receives"], answer: 0, tense: "Present Perfect Tense", hint: "'have not' is followed by Past Participle (received)." },
+        { text: "The teacher has just <span class='blank-space'></span> our exercise books.", options: ["checked", "check", "checking", "checks"], answer: 0, tense: "Present Perfect Tense", hint: "'has just' takes Past Participle (checked)." }
     ];
 
     let currentSessionQuestions = [];
@@ -505,7 +563,6 @@
         currentQIndex = 0;
         score = 0;
         tenseStats = {};
-        // Feature 1: Randomly shuffle and select 30 questions from master bank
         currentSessionQuestions = [...masterQuestionBank].sort(() => Math.random() - 0.5).slice(0, 30);
         
         document.getElementById("summary-modal").style.display = "none";
@@ -686,7 +743,6 @@
         modal.style.display = "flex";
     }
 
-    // Feature 3: Export Simple Score Report
     function exportReport() {
         const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
         let reportText = `======================================\n`;
